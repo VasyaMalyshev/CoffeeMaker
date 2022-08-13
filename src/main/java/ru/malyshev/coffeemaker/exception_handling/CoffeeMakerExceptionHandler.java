@@ -1,6 +1,7 @@
-package ru.malyshev.coffeemaker.controller.exception_handling;
+package ru.malyshev.coffeemaker.exception_handling;
 
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,5 +10,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CoffeeMakerExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<Response> handleException()
+    public ResponseEntity<CoffeeMaker> handleException(CoffeeMakerException exception) {
+        CoffeeMaker coffeeMaker = new CoffeeMaker();
+        coffeeMaker.setInfo(exception.getMessage());
+        return new ResponseEntity<>(coffeeMaker, HttpStatus.BAD_REQUEST);
+    }
+
+  /*  public ResponseEntity<Exception> exceptionResponseEntity(Exception e) {
+        Exception exception = new Exception();
+        exception.setStackTrace(e.getStackTrace());
+        return new ResponseEntity<>(exception, HttpStatus.BAD_REQUEST);
+    }*/
 }

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.malyshev.coffeemaker.model.CoffeeDrink;
 
 @Repository
-public interface CoffeeDrinksRepository extends JpaRepository<CoffeeDrink, Long> {
-    CoffeeDrink findCoffeeDrinkById(Long id);
+public interface CoffeeDrinkRepository extends JpaRepository<CoffeeDrink, Long> {
+    CoffeeDrink findCoffeeDrinkByName(String name);
 }

@@ -1,0 +1,94 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.0.0" author="vasiliy.malyshev">
+        <createTable tableName="coffee_drink">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="water" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="milk" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="coffee_beans" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="sugar" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.1" author="vasiliy.malyshev">
+        <insert tableName="coffee_drink">
+            <column name="id" value="1"/>
+            <column name="name" value="Americano"/>
+            <column name="water" value="200"/>
+            <column name="milk" value="0"/>
+            <column name="coffee_beans" value="12"/>
+            <column name="sugar" value="0"/>
+        </insert>
+
+        <insert tableName="coffee_drink">
+            <column name="id" value="2"/>
+            <column name="name" value="Cappuccino"/>
+            <column name="water" value="150"/>
+            <column name="milk" value="50"/>
+            <column name="coffee_beans" value="12"/>
+            <column name="sugar" value="10"/>
+        </insert>
+
+        <insert tableName="coffee_drink">
+            <column name="id" value="3"/>
+            <column name="name" value="Latte"/>
+            <column name="water" value="100"/>
+            <column name="milk" value="100"/>
+            <column name="coffee_beans" value="8"/>
+            <column name="sugar" value="10"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="vasiliy.malyshev">
+        <createTable tableName="ingredients">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="count" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.3" author="vasiliy.malyshev">
+        <insert tableName="ingredients">
+            <column name="id" value="1"/>
+            <column name="name" value="Water"/>
+            <column name="count" value="1000"/>
+        </insert>
+        <insert tableName="ingredients">
+            <column name="id" value="2"/>
+            <column name="name" value="CoffeeBeans"/>
+            <column name="count" value="900"/>
+        </insert>
+        <insert tableName="ingredients">
+            <column name="id" value="3"/>
+            <column name="name" value="Milk"/>
+            <column name="count" value="800"/>
+        </insert>
+        <insert tableName="ingredients">
+            <column name="id" value="4"/>
+            <column name="name" value="Sugar"/>
+            <column name="count" value="700"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

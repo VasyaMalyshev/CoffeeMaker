@@ -1,5 +1,7 @@
-package ru.malyshev.coffeemaker.controller.exception_handling;
+package ru.malyshev.coffeemaker.exception_handling;
 
 public class CoffeeMakerException extends RuntimeException{
-    public CoffeeMakerException(String message)
+    public CoffeeMakerException(String message) {
+        super(message);
+    }
 }
