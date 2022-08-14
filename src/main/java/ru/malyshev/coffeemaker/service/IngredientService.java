@@ -7,6 +7,5 @@ import java.util.List;
 public interface IngredientService {
 
     List<Ingredient> getAllIngredients();
-    void refillIngredient(Ingredient ing);
     void refillAllIngredients();
 }

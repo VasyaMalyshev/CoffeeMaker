@@ -1,50 +1,25 @@
 package ru.malyshev.coffeemaker.model;
 
+import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "ingredients")
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Ingredient {
     @Id
+    @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
+    @Min(0)
     private Long count;
-
-    public Ingredient() {
-    }
-
-    public Ingredient(Long id, String name, Long count) {
-        this.id = id;
-        this.name = name;
-        this.count = count;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
 
     @Override
     public boolean equals(Object o) {

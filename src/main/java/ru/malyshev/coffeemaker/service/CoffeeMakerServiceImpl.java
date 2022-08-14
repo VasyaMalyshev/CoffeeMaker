@@ -2,8 +2,8 @@ package ru.malyshev.coffeemaker.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.malyshev.coffeemaker.exception_handling.CoffeeMaker;
 import ru.malyshev.coffeemaker.exception_handling.CoffeeMakerException;
+import ru.malyshev.coffeemaker.integration.CoffeeMachine;
 import ru.malyshev.coffeemaker.model.CoffeeDrink;
 import ru.malyshev.coffeemaker.model.Ingredient;
 import ru.malyshev.coffeemaker.repository.CoffeeDrinkRepository;
@@ -19,6 +19,7 @@ public class CoffeeMakerServiceImpl implements CoffeeMakerService {
 
     private final CoffeeDrinkRepository coffeeDrinkRepository;
     private final IngredientRepository ingredientRepository;
+    private final CoffeeMachine coffeeMachine;
 
     @Override
     public List<CoffeeDrink> getAllCoffeeDrinks() {
@@ -26,37 +27,34 @@ public class CoffeeMakerServiceImpl implements CoffeeMakerService {
     }
 
     @Override
-    public CoffeeDrink makeCoffee(CoffeeDrink coffeeDrink) {
+    public CoffeeDrink getCoffeeById(Long id) {
+        return coffeeDrinkRepository.findById(id).get();
+    }
 
-        CoffeeDrink coffeeDrink1 = coffeeDrinkRepository.findCoffeeDrinkByName(coffeeDrink.getName());
+    @Override
+    public void makeCoffee(CoffeeDrink coffeeDrink) {
+
+        CoffeeDrink drink = coffeeDrinkRepository.findCoffeeDrinkByName(coffeeDrink.getName());
+
+        if (drink != null && checkAmountIngredients(coffeeDrink)) {
+            coffeeMachine.makeCoffee(drink);
+        } else {
+            throw new CoffeeMakerException("Указанный кофе не найден в списке или недостаточное количество ингредиентов");
+        }
+    }
+
+    private boolean checkAmountIngredients(CoffeeDrink coffeeDrink) {
 
         Ingredient water = ingredientRepository.findByName("Water");
         Ingredient milk = ingredientRepository.findByName("Milk");
         Ingredient coffeeBeans = ingredientRepository.findByName("CoffeeBeans");
         Ingredient sugar = ingredientRepository.findByName("Sugar");
 
-        if (coffeeDrink1 != null) {
-            water.setCount(checkAmountIngredients(water.getCount(), coffeeDrink1.getWater()));
-            milk.setCount(checkAmountIngredients(milk.getCount(), coffeeDrink1.getMilk()));
-            coffeeBeans.setCount(checkAmountIngredients(coffeeBeans.getCount(), coffeeDrink1.getCoffeeBeans()));
-            sugar.setCount(checkAmountIngredients(sugar.getCount(), coffeeDrink1.getSugar()));
+        boolean waterBoolean = (water.getCount() - coffeeDrink.getWater()) > 0;
+        boolean milkBoolean = (milk.getCount() - coffeeDrink.getMilk()) > 0;
+        boolean coffeeBeansBoolean = (coffeeBeans.getCount() - coffeeDrink.getCoffeeBeans()) > 0;
+        boolean sugarBoolean = (sugar.getCount() - coffeeDrink.getSugar() > 0);
 
-            ingredientRepository.save(water);
-            ingredientRepository.save(milk);
-            ingredientRepository.save(coffeeBeans);
-            ingredientRepository.save(sugar);
-        } else {
-            throw new CoffeeMakerException("Указанный кофе не найден");
-        }
-        return coffeeDrink1;
-    }
-
-    public Long checkAmountIngredients(Long ing, Long coffee) {
-        long count = ing - coffee;
-        if (count  >= 0) {
-            return count;
-        } else {
-            throw new CoffeeMakerException("Недостаточно ингредиентов для создания вашего кофе");
-        }
+        return waterBoolean && milkBoolean && coffeeBeansBoolean && sugarBoolean;
     }
 }

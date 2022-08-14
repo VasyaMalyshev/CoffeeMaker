@@ -1,90 +1,31 @@
 package ru.malyshev.coffeemaker.model;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "coffeeDrink")
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class CoffeeDrink {
-
     @Id
+    @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
     @Min(0)
-    @Max(1500)
     private Long water;
-
+    @Min(0)
     private Long coffeeBeans;
-
+    @Min(0)
     private Long milk;
-
+    @Min(0)
     private Long sugar;
-
-    public CoffeeDrink() {
-    }
-
-    public CoffeeDrink(Long id, String name, Long water, Long coffeeBeans, Long milk, Long sugar) {
-        this.id = id;
-        this.name = name;
-        this.water = water;
-        this.coffeeBeans = coffeeBeans;
-        this.milk = milk;
-        this.sugar = sugar;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getWater() {
-        return water;
-    }
-
-    public void setWater(Long water) {
-        this.water = water;
-    }
-
-    public Long getCoffeeBeans() {
-        return coffeeBeans;
-    }
-
-    public void setCoffeeBeans(Long coffeeBeans) {
-        this.coffeeBeans = coffeeBeans;
-    }
-
-    public Long getMilk() {
-        return milk;
-    }
-
-    public void setMilk(Long milk) {
-        this.milk = milk;
-    }
-
-    public Long getSugar() {
-        return sugar;
-    }
-
-    public void setSugar(Long sugar) {
-        this.sugar = sugar;
-    }
 
     @Override
     public boolean equals(Object o) {

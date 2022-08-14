@@ -7,6 +7,7 @@ import java.util.List;
 public interface CoffeeMakerService {
 
     List<CoffeeDrink> getAllCoffeeDrinks();
-    CoffeeDrink makeCoffee(CoffeeDrink coffeeDrink);
+    CoffeeDrink getCoffeeById(Long id);
+    void makeCoffee(CoffeeDrink coffeeDrink);
 
 }
