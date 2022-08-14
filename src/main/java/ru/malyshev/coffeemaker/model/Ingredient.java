@@ -1,23 +1,30 @@
 package ru.malyshev.coffeemaker.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.malyshev.coffeemaker.integration.CoffeeMachineMock;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "ingredients")
-@RequiredArgsConstructor
+@Table(name = "ingredient")
 @NoArgsConstructor
 public class Ingredient {
     @Id
-    @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private CoffeeMachineMock.Ingredients name;
     @Min(0)
     private Long count;
 
@@ -28,14 +35,14 @@ public class Ingredient {
 
         Ingredient that = (Ingredient) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!id.equals(that.id)) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         return count != null ? count.equals(that.count) : that.count == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (count != null ? count.hashCode() : 0);
         return result;

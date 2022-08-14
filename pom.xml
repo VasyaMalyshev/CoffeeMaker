@@ -60,10 +60,6 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

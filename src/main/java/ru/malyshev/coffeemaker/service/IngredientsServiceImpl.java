@@ -1,10 +1,12 @@
 package ru.malyshev.coffeemaker.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-import ru.malyshev.coffeemaker.exception_handling.CoffeeMakerException;
+import ru.malyshev.coffeemaker.integration.CoffeeMachine;
+import ru.malyshev.coffeemaker.model.CoffeeDrink;
 import ru.malyshev.coffeemaker.model.Ingredient;
-import ru.malyshev.coffeemaker.repository.IngredientRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -14,37 +16,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IngredientsServiceImpl implements IngredientService {
 
-    private final IngredientRepository ingredientRepository;
+    private final CoffeeMachine coffeeMachine;
 
     @Override
-    public List<Ingredient> getAllIngredients() {
-        return ingredientRepository.findAll();
-    }
+    public boolean checkIngredients(CoffeeDrink coffeeDrink) {
+        List<Ingredient> ingredients = coffeeDrink.getIngredients();
+        for (Ingredient ingredient : ingredients) {
+            switch (ingredient.getName()) {
+                case WATER:
+                    if (coffeeMachine.getCurrentWater() - ingredient.getCount() < 0){
+                        return false;
+                    }
+                    break;
+                case COFFEE_BEANS:
+                    if (coffeeMachine.getCurrentCoffeeBeans() - ingredient.getCount() < 0){
+                        return false;
+                    }
+                    break;
+                case MILK:
+                    if (coffeeMachine.getCurrentMilk() - ingredient.getCount() < 0){
+                        return false;
+                    }
+                    break;
+                case SUGAR:
+                    if (coffeeMachine.getCurrentSugar() - ingredient.getCount() < 0){
+                        return false;
+                    }
+                    break;
+            }
 
-    @Override
-    public void refillAllIngredients() {
-        List<Ingredient> allIngredients = ingredientRepository.findAll();
-        for (Ingredient ingredient : allIngredients) {
-            long LIQUID_MAX = 1000L;
-            if (ingredient.getName().equals("Water")) {
-                ingredient.setCount(LIQUID_MAX);
-                ingredientRepository.save(ingredient);
-            }
-            if (ingredient.getName().equals("CoffeeBeans")) {
-                long BEAN_MAX = 500L;
-                ingredient.setCount(BEAN_MAX);
-                ingredientRepository.save(ingredient);
-            }
-            if (ingredient.getName().equals("Milk")) {
-                ingredient.setCount(LIQUID_MAX);
-                ingredientRepository.save(ingredient);
-            }
-            if (ingredient.getName().equals("Sugar")) {
-                long SUGAR_MAX = 300L;
-                ingredient.setCount(SUGAR_MAX);
-                ingredientRepository.save(ingredient);
-            }
         }
-        System.out.println("Ингредиенты пополнены");
+        return true;
     }
 }
